@@ -13,6 +13,7 @@
     "tests"
   ],
   "dependencies": {
+    "marked": "~0.3.5",
     "normalize-css": "~3.0.3",
     "react": "~0.13.3"
   }
