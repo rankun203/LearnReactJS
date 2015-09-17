@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>React todo 2015年09月17日</title>
+  <link rel="stylesheet" href="bower_components/normalize-css/normalize.css"/>
+</head>
+<body>
+
+<div class="todo-container"></div>
+
+<script src="bower_components/react/react.js"></script>
+<script>
+  TodoList = React.createClass({
+    displayName: 'TodoName',
+    getInitialState: function () {
+      return {
+        todos: [{key: 'todo1', desc: 'First'}, {key: 'todo2', desc: 'Second'}],
+        text: ''
+      };
+    },
+    onChange: function (e) {
+      this.setState({text: e.target.value});
+    },
+    handleSubmit: function (e) {
+      e.preventDefault();
+      var nextItems = this.state.todos.push({desc: this.state.text});
+      var nextText = '';
+      this.setState({items: nextItems, text: nextText});
+    },
+    render: function () {
+      var todoEleList = this.state.todos.map(function (todo) {
+        return React.createElement('li', {key: todo.key}, todo['desc']);
+      });
+
+      return (
+          React.createElement('div', null,
+              React.createElement('form', {onSubmit: this.handleSubmit},
+                  React.createElement('input', {type: 'text', onChange: this.onChange, value: this.state.text},
+                      React.createElement('button', null, 'Add Todo')
+                  )
+              ),
+              React.createElement('ul', null, todoEleList)
+          )
+      );
+    }
+  });
+  React.render(React.createElement(TodoList, null), document.querySelector('.todo-container'));
+</script>
+</body>
+</html>
