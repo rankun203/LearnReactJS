@@ -1,0 +1,19 @@
+{
+  "name": "learn react",
+  "version": "2015.09.17",
+  "authors": [
+    "rankun203 <rankun203@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize-css": "~3.0.3",
+    "react": "~0.13.3"
+  }
+}
