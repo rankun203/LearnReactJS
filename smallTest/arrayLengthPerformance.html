@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+
+<script>
+  var arr = [];
+  for (var i = 0; i < 1000000; i++) {
+    arr.push('This is a text' + i);
+  }
+
+  var start = new Date().getTime();
+  for (var i = 0; i < 1000000; i++) {
+    var b = arr.length;
+  }
+  console.log(new Date().getTime() - start);
+</script>
+</body>
+</html>
