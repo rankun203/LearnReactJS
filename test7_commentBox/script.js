@@ -17,8 +17,9 @@
       setInterval(this.loadCommentsFromServer, this.props.pollInterval);
     },
     handleCommentSubmit: function (comment) {
-      this.state.comments.push(comment);
-      this.setState({comments: this.state.comments});
+      var comments = this.state.comments;
+      var newComments = comments.concat([comment]);
+      this.setState({data: newComments});
 
       var dataUrl = this.props.url + '?_=' + new Date().getTime();
       $.post(dataUrl, comment);
