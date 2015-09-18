@@ -1,10 +1,18 @@
 (function () {
   var CommentBox = React.createClass({
     displayName: 'CommentBox',
+    getInitialState: function() {
+      return {
+        comments: [
+          {name: 'Kun', msg: 'This is my message'},
+          {name: 'Zhou', msg: 'Hey, I am Zhou'}
+        ]
+      };
+    },
     render: function () {
       return (
           <div className='commentBox'>
-            <CommentList />
+            <CommentList comments={this.state.comments}/>
             <CommentForm />
           </div>
       );
@@ -14,13 +22,12 @@
   var CommentList = React.createClass({
     displayName: 'CommentList',
     render: function () {
+      var commentList = this.props.comments.map(function (comment) {
+        return (<Comment name={comment.name} msg={comment.msg}/>);
+      });
+
       return (
-          <ul>
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-          </ul>
+          <ul>{commentList}</ul>
       );
     }
   });
@@ -30,9 +37,9 @@
     render: function () {
       return (
           <li>
-            <h1>Comment Title</h1>
+            <h2>{this.props.name}</h2>
 
-            <div>Comment content</div>
+            <div>{this.props.msg}</div>
           </li>
       );
     }
@@ -57,8 +64,10 @@
     render: function () {
       return (
           <form action="#" method="POST" onSubmit={this.handleSubmit} className='commentForm'>
-            <label>Name: <input type="text" value={this.state.name} onChange={this.handleNameChange} name="name"/></label>
-            <label>Comment: <input type="text" value={this.state.msg} onChange={this.handleMsgChange} name="msg"/></label>
+            <label>Name:
+              <input type="text" value={this.state.name} onChange={this.handleNameChange} name="name"/></label>
+            <label>Comment:
+              <input type="text" value={this.state.msg} onChange={this.handleMsgChange} name="msg"/></label>
             <input type="submit" value="leave a comment"/>
           </form>
       );
