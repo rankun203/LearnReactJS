@@ -1,12 +1,12 @@
 (function () {
   var CommentBox = React.createClass({
     displayName: 'CommentBox',
-    getInitialState: function() {
+    getInitialState(){
       return {
-        comments: [
-          {name: 'Kun', msg: 'This is my message'},
-          {name: 'Zhou', msg: 'Hey, I am Zhou'}
-        ]
+        comments: [{"author": "Pete Hunt", "text": "Hey there!"}, {
+          "author": "Paul O’Shannessy",
+          "text": "React is *great*!"
+        }, {"author": "Kun", "text": "Hello"}, {"author": "Hehe", "text": "Kunor"}]
       };
     },
     render: function () {
@@ -22,12 +22,13 @@
   var CommentList = React.createClass({
     displayName: 'CommentList',
     render: function () {
-      var commentList = this.props.comments.map(function (comment) {
-        return (<Comment name={comment.name} msg={comment.msg}/>);
+      console.log(this.props);
+      var commentNodes = this.props.comments.map(function (comment) {
+        return (<Comment author={comment.author} text={comment.text}/>);
       });
 
       return (
-          <ul>{commentList}</ul>
+          <ul>{commentNodes}</ul>
       );
     }
   });
@@ -37,9 +38,11 @@
     render: function () {
       return (
           <li>
-            <h2>{this.props.name}</h2>
+            <h2>{this.props.author}</h2>
 
-            <div>{this.props.msg}</div>
+            <div class="content" dangerouslySetInnerHTML={{
+              __html: marked(this.props.text, {sanitize: true})
+            }}/>
           </li>
       );
     }
@@ -48,26 +51,26 @@
   var CommentForm = React.createClass({
     displayName: 'Comment',
     getInitialState: function () {
-      return {name: '', msg: ''};
+      return {author: '', text: ''};
     },
     handleNameChange: function (e) {
-      this.setState({name: e.target.value});
+      this.setState({author: e.target.value});
     },
-    handleMsgChange: function (e) {
-      this.setState({msg: e.target.value});
+    handleTextChange: function (e) {
+      this.setState({text: e.target.value});
     },
     handleSubmit: function (e) {
       e.preventDefault();
-      this.setState({name: '', msg: ''});
+      this.setState({author: '', text: ''});
       console.log(this.state);
     },
     render: function () {
       return (
           <form action="#" method="POST" onSubmit={this.handleSubmit} className='commentForm'>
             <label>Name:
-              <input type="text" value={this.state.name} onChange={this.handleNameChange} name="name"/></label>
+              <input type="text" value={this.state.author} onChange={this.handleNameChange} name="author"/></label>
             <label>Comment:
-              <input type="text" value={this.state.msg} onChange={this.handleMsgChange} name="msg"/></label>
+              <input type="text" value={this.state.text} onChange={this.handleTextChange} name="text"/></label>
             <input type="submit" value="leave a comment"/>
           </form>
       );
@@ -75,7 +78,7 @@
   });
 
   React.render(
-      <CommentBox />,
+      <CommentBox url="https://guarded-atoll-6445.herokuapp.com/comments.json"/>,
       document.querySelector('#content')
   );
 })();
