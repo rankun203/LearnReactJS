@@ -5,4 +5,5 @@ Learning react js
 
 ```shell
 bower install
+npm install
 ```
