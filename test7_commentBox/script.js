@@ -2,22 +2,32 @@
   var CommentBox = React.createClass({
     displayName: 'CommentBox',
     getInitialState(){
-      return {
-        comments: []
-      };
+      return {comments: []};
+    },
+    loadCommentsFromServer: function () {
+      var dataUrl = this.props.url + '?_=' + new Date().getTime();
+      $.getJSON(dataUrl, function (data) {
+        this.setState({comments: data});
+      }.bind(this)).fail(function () {
+        console.log("ADD to all server api: res.header('Access-Control-Allow-Origin', 'http://localhost:63342')");
+      });
     },
     componentDidMount: function () {
+      this.loadCommentsFromServer();
+      setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    },
+    handleCommentSubmit: function (comment) {
+      this.state.comments.push(comment);
+      this.setState({comments: this.state.comments});
+
       var dataUrl = this.props.url + '?_=' + new Date().getTime();
-      var componentThis = this;
-      $.getJSON(dataUrl, function (data) {
-        componentThis.setState({comments: data});
-      });
+      $.post(dataUrl, comment);
     },
     render: function () {
       return (
           <div className='commentBox'>
             <CommentList comments={this.state.comments}/>
-            <CommentForm />
+            <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
           </div>
       );
     }
@@ -65,6 +75,13 @@
     },
     handleSubmit: function (e) {
       e.preventDefault();
+      var author = this.state.author.trim();
+      var text = this.state.text.trim();
+      if (text.length === 0 || author.length === 0) {
+        return;
+      }
+
+      this.props.onCommentSubmit(this.state);
       this.setState({author: '', text: ''});
       console.log(this.state);
     },
@@ -82,7 +99,7 @@
   });
 
   React.render(
-      <CommentBox url="http://localhost:3000/comments.json"/>,
+      <CommentBox url="http://localhost:3000/comments.json" pollInterval={1000}/>,
       document.querySelector('#content')
   );
 })();
