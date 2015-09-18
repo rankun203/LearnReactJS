@@ -3,11 +3,15 @@
     displayName: 'CommentBox',
     getInitialState(){
       return {
-        comments: [{"author": "Pete Hunt", "text": "Hey there!"}, {
-          "author": "Paul O’Shannessy",
-          "text": "React is *great*!"
-        }, {"author": "Kun", "text": "Hello"}, {"author": "Hehe", "text": "Kunor"}]
+        comments: []
       };
+    },
+    componentDidMount: function () {
+      var dataUrl = this.props.url + '?_=' + new Date().getTime();
+      var componentThis = this;
+      $.getJSON(dataUrl, function (data) {
+        componentThis.setState({comments: data});
+      });
     },
     render: function () {
       return (
@@ -78,7 +82,7 @@
   });
 
   React.render(
-      <CommentBox url="https://guarded-atoll-6445.herokuapp.com/comments.json"/>,
+      <CommentBox url="http://localhost:3000/comments.json"/>,
       document.querySelector('#content')
   );
 })();
