@@ -1,5 +1,5 @@
 # LearnReactJS
-Learning react js
+Learning React JS
 
 ## Resolve dependencies
 
